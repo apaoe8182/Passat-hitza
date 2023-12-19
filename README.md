@@ -7,9 +7,9 @@ Este repositorio contiene una versión modificada del software Passat para la ge
 ## Installation
 
 ```
-git clone https://github.com/HynekPetrak/Passat.git
+git clone https://github.com/apuy2023/passatuta.git
 ```
-Tested with Python 3.10
+Tested with Python 3.10.12
 
 ### Requirements
 
