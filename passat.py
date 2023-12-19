@@ -7,6 +7,7 @@ import argparse
 import json
 from fuzzywuzzy import process
 from collections import Counter
+import chart_generator as cg
 
 VERSION = "1.7"
 
@@ -67,7 +68,7 @@ trans = str.maketrans(tr_from, tr_to)
 line_re = re.compile("(?:.*?:)?(?:.*?:)?(.*)$", re.UNICODE)
 
 
-def print_counter(title, cnt, grand_total, limit=15):
+def print_counter(title, cnt, grand_total, limit=10):
     print(f"{title}")
     print("=" * len(title))
     items = cnt.most_common(limit)
@@ -111,6 +112,8 @@ def main():
                         action="store_true")
     parser.add_argument("-c", "--categories", help="json file with password categories for fuzzy matching, defaults to categories.json",
                         default="categories.json")
+    parser.add_argument("-o", "--output", help="output path for the charts",
+                        default="images")
     args = parser.parse_args()
 
     if not args.no_categories:
@@ -249,12 +252,45 @@ def main():
     print()
     if not args.no_categories:
         print_counter("Categories", cnt, grand_total)
+        df = cg.generate_df(cnt=cnt, grand_total = grand_total, limit=15)[1:]
+        chart = cg.generate_barchart(df=df, title = "Categorías más repetidas", x="value", y="desc", x_label = "Ocurrencias", y_label = "Categoría")
+        cg.export(chart, title = "categorias_mas_repetidas", output_path=args.output)
+
         print_counter("Password base words:", cnt_root, grand_total)
+        df = cg.generate_df(cnt=cnt_root, grand_total = grand_total, limit=15)
+        chart = cg.generate_barchart(df=df, title = "Palabras de diccionario más repetidas", x="value", y="desc", x_label = "Ocurrencias", y_label = "Palabra")
+        cg.export(chart, title = "palabras_mas_repetidas", output_path=args.output)
+
     print_counter("Password length frequency:", cnt_length, grand_total)
+    df = cg.generate_df(cnt=cnt_length, grand_total = grand_total)
+    df.sort_values(by=["desc"], inplace=True)
+    pallete = {}
+    for q in set(df["desc"]):
+        if q < 8:
+            pallete[q] = '#D3212C'
+        elif q < 12:
+            pallete[q] = '#FF681E'
+        else:
+            pallete[q] = '#069C56'
+    chart = cg.generate_barchart(df=df, title = "Frecuencia de longitud de contraseñas:", x="desc", y="value", x_label = "Número de caracteres", y_label = "Ocurrencias", palette=pallete)
+    cg.export(chart, title = "num_caracteres", output_path=args.output)
+
     print_counter("Password values:", cnt_pwd, grand_total)
-    print_counter("Charsets and sequences:", cnt_regex,
-                  grand_total, len(stats_regex))
-    print_counter("Password patterns:", cnt_pattern, grand_total, 15)
+    df = cg.generate_df(cnt=cnt_pwd, grand_total = grand_total, limit=16)[1:]
+    chart = cg.generate_barchart(df=df, title = "Contraseñas más repetidas", x="value", y="desc", x_label = "Ocurrencias", y_label = "Contraseña")
+    cg.export(chart, title = "cont_mas_repetidos", output_path=args.output)
+
+    print_counter("Charsets and sequences:", cnt_regex, grand_total, limit=10)
+    df = cg.generate_df(cnt=cnt_regex, grand_total = grand_total, limit=10)
+    df = df[df["desc"].str.contains('Seq')]
+    chart = cg.generate_barchart(df=df, title = "Secuencias más repetidas", x="value", y="desc", x_label = "Ocurrencias", y_label = "Secuencia")
+    cg.export(chart, title = "sec_mas_repetidos", output_path=args.output)
+
+    print_counter("Password patterns:", cnt_pattern, grand_total, 10)
+    df = cg.generate_df(cnt=cnt_pattern, grand_total = grand_total, limit=10)
+    chart = cg.generate_barchart(df=df, title = "Patrones más repetidos", x="value", y="desc", x_label = "Ocurrencias", y_label = "Patrón")
+    cg.export(chart, title = "patrones_mas_repetidos", output_path=args.output)
+
     if args.freq:
         print_counter("Most frequent alpha chars:",
                       cnt_alpha, cnt_totals["alpha"])
