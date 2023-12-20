@@ -4,6 +4,7 @@ import seaborn as sns
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
+# Prevent Matplotlib's parser from breaking when processing dollar symbols.
 mpl.rcParams['text.parse_math'] = False
 
 def generate_df(cnt, grand_total, limit = 30):
@@ -41,10 +42,6 @@ def generate_barchart(df, title, x, y, x_label = None, y_label = None, palette =
     fig = plot.figure
 
     return fig
-
-def addlabels(x,y):
-    for i in range(len(x)):
-        plt.text(i,y[i],y[i])
 
 def export(fig, title, output_path = "images"):
 
