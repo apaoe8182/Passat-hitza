@@ -1,8 +1,8 @@
-# Passatuta - Modified version for graph generation
+# Passat-hitza
 
 Proyecto original: https://github.com/HynekPetrak/Passat.git
 
-Este repositorio contiene una versión modificada del software Passat para la generación de gráficos a partir de la información conseguida por la app.
+Este repositorio contiene una versión modificada del software [Passat](https://github.com/HynekPetrak/Passat.git) para la generación de gráficos a partir de la información conseguida por la app.
 
 ## Installation
 
