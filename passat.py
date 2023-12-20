@@ -112,7 +112,7 @@ def main():
                         action="store_true")
     parser.add_argument("-c", "--categories", help="json file with password categories for fuzzy matching, defaults to categories.json",
                         default="categories.json")
-    parser.add_argument("-o", "--output", help="output path for the charts",
+    parser.add_argument("-o", "--output", help="output path for the charts. Default: ./images",
                         default="images")
     args = parser.parse_args()
 

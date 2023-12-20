@@ -37,7 +37,7 @@ options:
                         json file with password categories for fuzzy matching, defaults to
                         categories.json
   -o OUTPUT, --output OUTPUT
-                        output path for the charts
+                        output path for the charts. Default: ./images
 
 ```
 
