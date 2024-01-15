@@ -276,7 +276,8 @@ def main():
     cg.export(chart, title = "num_caracteres", output_path=args.output)
 
     print_counter("Password values:", cnt_pwd, grand_total)
-    df = cg.generate_df(cnt=cnt_pwd, grand_total = grand_total, limit=16)[1:]
+    # df = cg.generate_df(cnt=cnt_pwd, grand_total = grand_total, limit=16)[1:]
+    df = cg.generate_df(cnt=cnt_pwd, grand_total = grand_total, limit=15)
     chart = cg.generate_barchart(df=df, title = "Contraseñas más repetidas", x="value", y="desc", x_label = "Ocurrencias", y_label = "Contraseña")
     cg.export(chart, title = "cont_mas_repetidos", output_path=args.output)
 
