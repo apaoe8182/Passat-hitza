@@ -5,7 +5,7 @@ Este repositorio contiene una versión modificada del software [Passat](https://
 ## Installation
 
 ```
-git clone https://github.com/apuy2023/passatuta.git
+git clone https://github.com/apaoe8182/Passat-hitza.git
 ```
 Tested with Python 3.10.12
 
